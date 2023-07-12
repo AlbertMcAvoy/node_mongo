@@ -37,3 +37,8 @@ ressources mises à disposition (exception pour `security` qui n'est pas une res
 L'installation se fait simplement grâce à la commande `npm i`.
 
 L'application se compile avec la commande `npm run build`, puis se lance avec `npm run start`.
+
+# Éléments de cours
+
+[Prise de notes](docs/notes/Prise%20de%20note.md)
+[Exercices 1 & 2](docs/notes/Exercices.md)
