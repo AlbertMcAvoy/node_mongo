@@ -41,7 +41,7 @@ UsersController.get('/:id', authenticateToken, (req, res) => {
 /**
  * Create user
  */
-UsersController.post('/', authenticateToken, (req, res) => {
+UsersController.post('/', (req, res) => {
     const createdRestaurant = service.create(req.body)
 
     return res
