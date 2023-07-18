@@ -1,7 +1,7 @@
 import { ApiException } from '~~/types/exceptions'
 
 /**
- * Abstract class used to make HTTP error (ici 400 et 404)
+ * Abstract class used to make HTTP errors
  *
  * Precise there that the class implements `ApiException`
  *
@@ -9,7 +9,7 @@ import { ApiException } from '~~/types/exceptions'
  * prevent change values later.
  *
  */
-class AbstractException implements ApiException {
+export class AbstractException implements ApiException {
     constructor(readonly error: any, readonly status: number) {}
 }
 
@@ -37,5 +37,14 @@ export class BadRequestException extends AbstractException {
 export class UnauthorizedException extends AbstractException {
     constructor(error: any) {
         super(error, 400)
+    }
+}
+
+/**
+ * Create 409
+ */
+export class ConflictException extends AbstractException {
+    constructor(error: any) {
+        super(error, 409)
     }
 }

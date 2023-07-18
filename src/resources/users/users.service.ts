@@ -1,4 +1,5 @@
 import {IUser, Users} from '~~/types/Users'
+import {AbstractException} from "~/utils/exceptions";
 
 export class UsersService {
 
@@ -7,9 +8,10 @@ export class UsersService {
      */
     async findAll() {
         try {
-            return await Users.find();
+            return await Users.find({}, {'_id': false, '__v': false, 'password': false});
         } catch (error) {
             console.log(error);
+            throw error
         }
     }
 
@@ -17,19 +19,21 @@ export class UsersService {
      * Find a specific user
      * @param id - user's ID
      */
-    async findOne(id: string) {
+    async findOneById(id: string) {
         try {
-            return await Users.findOne({uuid: id});
+            return await Users.findOne({uuid: id}, {'_id': false, '__v': false, 'password': false});
         } catch (error) {
             console.log(error);
+            throw error
         }
     }
 
     async findOneByCredentials(email: string, password: string) {
         try {
-            return await Users.findOne({email: email, password: password}, {'_id': false, '__v': false});
+            return await Users.findOne({email: email, password: password});
         } catch (error) {
             console.log(error);
+            throw error
         }
     }
 
@@ -41,9 +45,13 @@ export class UsersService {
      */
     async update(userData: Partial<IUser>, id: string) {
         try {
-            return await Users.updateOne({uuid: id}, userData);
+            if (userData.uuid) delete userData.uuid;
+            let result = await Users.updateOne({uuid: id}, userData);
+            if (!result.modifiedCount) throw new AbstractException('The user was not updated, nothing to update', 500);
+            return this.findOneById(id);
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -54,9 +62,26 @@ export class UsersService {
      */
     async create(userData: IUser) {
         try {
-            return await Users.create(userData);
+            userData.uuid = String(Math.floor(Math.random() * 1000000));
+            return (await Users.create(userData)).toJSON();
         } catch (error) {
             console.log(error);
+            throw error
+        }
+    }
+
+    /**
+     *
+     * This method is used to check if a user exists or not.
+     *
+     * @param email - user's email
+     */
+    async findOneByEmail(email: string) {
+        try {
+            return await Users.findOne({email: email});
+        } catch (error) {
+            console.log(error);
+            throw error
         }
     }
 
@@ -68,6 +93,7 @@ export class UsersService {
             return await Users.findOneAndDelete({uuid: id});
         } catch (error) {
             console.log(error);
+            throw error
         }
     }
 }

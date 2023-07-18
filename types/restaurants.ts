@@ -18,8 +18,26 @@ const restaurantSchema = new Schema({
     cuisine: String,
     grades: Array,
     name: String,
-    restaurant_id: { type: String, required: true },
+    restaurant_id: { type: String, required: true, unique: true },
 });
 
 // 3. Create a Model.
 export const Restaurants = model<IRestaurant>('Restaurant', restaurantSchema);
+
+// 4. Create a DTO
+export class RestaurantDTO {
+    address: any;
+    borough: string;
+    cuisine: string;
+    grades: [];
+    name: string;
+    restaurant_id: string;
+    constructor(restaurant: IRestaurant) {
+        this.address = restaurant.address;
+        this.borough = restaurant.borough;
+        this.cuisine = restaurant.cuisine;
+        this.grades = restaurant.grades;
+        this.name = restaurant.name;
+        this.restaurant_id = restaurant.restaurant_id;
+    }
+}

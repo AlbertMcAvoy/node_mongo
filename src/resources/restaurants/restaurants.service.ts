@@ -1,4 +1,5 @@
 import {IRestaurant, Restaurants} from '~~/types/restaurants'
+import {AbstractException} from "~/utils/exceptions";
 
 export class RestaurantsService {
 
@@ -7,9 +8,10 @@ export class RestaurantsService {
      */
     async findAll() {
         try {
-            return await Restaurants.find();
+            return await Restaurants.find({}, {'_id': false, '__v': false});
         } catch (error) {
             console.log(error);
+            throw error
         }
     }
 
@@ -19,9 +21,10 @@ export class RestaurantsService {
      */
     async findOne(id: string) {
         try {
-            return await Restaurants.findOne({restaurant_id: id});
+            return await Restaurants.findOne({restaurant_id: id}, {'_id': false, '__v': false});
         } catch (error) {
             console.log(error);
+            throw error
         }
     }
 
@@ -33,9 +36,13 @@ export class RestaurantsService {
      */
     async update(restaurantData: Partial<IRestaurant>, id: string) {
         try {
-            return await Restaurants.updateOne({restaurant_id: id}, restaurantData);
+            if (restaurantData.restaurant_id) delete restaurantData.restaurant_id;
+            let result = await Restaurants.updateOne({restaurant_id: id}, restaurantData);
+            if (!result.modifiedCount) throw new AbstractException('The restaurant was not updated, nothing to update', 500);
+            return this.findOne(id);
         } catch (error) {
             console.log(error);
+            throw error
         }
     }
 
@@ -46,9 +53,11 @@ export class RestaurantsService {
      */
     async create(restaurantData: IRestaurant) {
         try {
-            return await Restaurants.create(restaurantData);
+            restaurantData.restaurant_id = String(Math.floor(Math.random() * 1000000));
+            return (await Restaurants.create(restaurantData)).toJSON();
         } catch (error) {
             console.log(error);
+            throw error
         }
     }
 
@@ -60,6 +69,7 @@ export class RestaurantsService {
             return await Restaurants.findOneAndDelete({restaurant_id: id});
         } catch (error) {
             console.log(error);
+            throw error
         }
     }
 }

@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { RestaurantsService } from '~/resources/restaurants/restaurants.service'
-import {BadRequestException, NotFoundException, UnauthorizedException} from '~/utils/exceptions'
+import {BadRequestException, ConflictException, NotFoundException, UnauthorizedException} from '~/utils/exceptions'
 import {authenticateToken} from "~/middlewares/authentication.handler";
+import {IRestaurant, RestaurantDTO} from "~~/types/restaurants";
 
 
 /**
@@ -19,10 +20,9 @@ const service = new RestaurantsService();
  */
 RestaurantsController.get('/', authenticateToken, async (req, res, next) => {
     try {
-        const restaurants = await service.findAll();
         return res
             .status(200)
-            .json(restaurants);
+            .json(await service.findAll());
     } catch(error) {
         return next(error);
     }
@@ -33,10 +33,6 @@ RestaurantsController.get('/', authenticateToken, async (req, res, next) => {
  */
 RestaurantsController.get('/:id', authenticateToken, async (req, res, next) => {
     try {
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
-
-        if (token == null) throw new UnauthorizedException('Authorization required');
 
         const id = req.params.id;
 
@@ -59,11 +55,16 @@ RestaurantsController.get('/:id', authenticateToken, async (req, res, next) => {
  */
 RestaurantsController.post('/', authenticateToken, async (req, res, next) => {
     try {
+
+        const restaurant = await service.findOne(req.body.restaurant_id)
+
+        if (restaurant) throw new ConflictException('Restaurant already Exists')
+
         const createdRestaurant = await service.create(req.body);
 
         return res
             .status(201)
-            .json(createdRestaurant);
+            .json(new RestaurantDTO(<IRestaurant>createdRestaurant));
     } catch(error) {
         return next(error);
     }
@@ -82,7 +83,7 @@ RestaurantsController.put('/:id', authenticateToken, async (req, res, next) => {
 
         return res
             .status(200)
-            .json(updatedRestaurant);
+            .json(new RestaurantDTO(<IRestaurant>updatedRestaurant));
     } catch(error) {
         return next(error);
     }
@@ -97,11 +98,14 @@ RestaurantsController.delete('/:id', authenticateToken, async (req, res, next) =
 
         if (!Number.isInteger(id)) throw new BadRequestException('Invalid ID');
 
-        const restaurant = await service.delete(id);
+        let deletedRestaurant = await service.delete(id);
+        if (deletedRestaurant === null) throw new NotFoundException('User not found');
+
+        deletedRestaurant = deletedRestaurant.toJSON();
 
         return res
             .status(200)
-            .json(restaurant);
+            .json(new RestaurantDTO(<IRestaurant>deletedRestaurant));
     } catch(error) {
         return next(error);
     }

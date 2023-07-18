@@ -62,4 +62,7 @@ mongoose.connect('mongodb+srv://mykechastang:fYCZmUHTzOlXULNm@clusteralbert.c3xo
     app.listen(process.env.API_PORT, () => console.log(`Application running on port : ${process.env.API_PORT}`))
 });
 
+mongoose.set('toObject', { useProjection: true });
+mongoose.set('toJSON', { useProjection: true });
+
 export { app };
