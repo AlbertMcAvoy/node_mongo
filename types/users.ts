@@ -1,4 +1,4 @@
-import { Schema, model, Types, Model, Document } from 'mongoose';
+import { Schema, model, Types, Document } from 'mongoose';
 
 // 1. Create an interface representing a document in MongoDB.
 export interface IUser extends Document {
@@ -11,9 +11,9 @@ export interface IUser extends Document {
 // 2. Create a Schema corresponding to the document interface.
 const userSchema: Schema = new Schema({
     id: Types.ObjectId,
-    uuid: { type: String, required: true },
+    uuid: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 });
 

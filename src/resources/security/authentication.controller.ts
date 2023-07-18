@@ -24,7 +24,7 @@ AuthenticationController.post('/', async (req, res, next) => {
 
         if (!user) throw new NotFoundException('Invalid credentials');
 
-        const accessToken = service.generateAccessToken(user);
+        const accessToken = service.generateAccessToken(user.toJSON());
 
         res.send({
             accessToken,

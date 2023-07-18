@@ -5,6 +5,10 @@ config();
 export class AuthenticationService {
 
     generateAccessToken(user: object) {
-        return sign(user, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '1800s' });
+        try {
+            return sign(user, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '1800s' });
+        } catch(e) {
+            console.log(e);
+        }
     }
 }

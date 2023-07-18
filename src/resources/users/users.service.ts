@@ -27,7 +27,7 @@ export class UsersService {
 
     async findOneByCredentials(email: string, password: string) {
         try {
-            return await Users.findOne({email: email, password: password});
+            return await Users.findOne({email: email, password: password}, {'_id': false, '__v': false});
         } catch (error) {
             console.log(error);
         }

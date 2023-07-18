@@ -15,66 +15,66 @@ const service = new UsersService()
 /**
  * Find all users
  */
-UsersController.get('/', authenticateToken, (req, res) => {
+UsersController.get('/', authenticateToken, async (req, res) => {
     return res
         .status(200)
-        .json(service.findAll())
+        .json(await service.findAll())
 })
 
 /**
  * Find a specific user
  */
-UsersController.get('/:id', authenticateToken, (req, res) => {
+UsersController.get('/:id', authenticateToken, async (req, res) => {
     const id = req.params.id
 
     if (Number.isInteger(id)) throw new BadRequestException('Invalid ID')
 
-    const restaurant = service.findOne(id)
+    const user = await service.findOne(id)
 
-    if (!restaurant) throw new NotFoundException('User not found')
+    if (!user) throw new NotFoundException('User not found')
 
     return res
         .status(200)
-        .json(restaurant)
+        .json(user)
 })
 
 /**
  * Create user
  */
-UsersController.post('/', (req, res) => {
-    const createdRestaurant = service.create(req.body)
+UsersController.post('/', async (req, res) => {
+    const createdUser = await service.create(req.body)
 
     return res
         .status(201)
-        .json(createdRestaurant)
+        .json(createdUser)
 })
 
 /**
  * Update user
  */
-UsersController.patch('/:id', authenticateToken, (req, res) => {
+UsersController.patch('/:id', authenticateToken, async (req, res) => {
     const id = req.params.id;
 
     if (Number.isInteger(id)) throw new BadRequestException('Invalid ID')
 
-    const updatedRestaurant = service.update(req.body, id)
+    const updatedUser = await service.update(req.body, id)
 
     return res
         .status(200)
-        .json(updatedRestaurant)
+        .json(updatedUser)
 })
 
 /**
  * Delete user
  */
-UsersController.delete('/:id', authenticateToken, (req, res) => {
+UsersController.delete('/:id', authenticateToken, async (req, res) => {
     const id = Number(req.params.id)
 
     if (!Number.isInteger(id)) throw new BadRequestException('Invalid ID')
 
     return res
         .status(200)
-        .json(service.delete(id))
+        .json(await service.delete(id))
 })
 
 export { UsersController }
