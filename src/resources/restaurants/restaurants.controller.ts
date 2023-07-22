@@ -1,8 +1,8 @@
-import { Router } from 'express'
-import { RestaurantsService } from '~/resources/restaurants/restaurants.service'
-import {BadRequestException, ConflictException, NotFoundException, UnauthorizedException} from '~/utils/exceptions'
+import {Router} from 'express'
+import {RestaurantsService} from '~/resources/restaurants/restaurants.service'
+import {BadRequestException, ConflictException, NotFoundException} from '~/utils/exceptions'
 import {authenticateToken} from "~/middlewares/authentication.handler";
-import {IRestaurant, RestaurantDTO} from "~~/types/restaurants";
+import {IRestaurant, RestaurantDTO} from "~/types/restaurants";
 
 
 /**
@@ -99,7 +99,7 @@ RestaurantsController.delete('/:id', authenticateToken, async (req, res, next) =
         if (!Number.isInteger(id)) throw new BadRequestException('Invalid ID');
 
         let deletedRestaurant = await service.delete(id);
-        if (deletedRestaurant === null) throw new NotFoundException('User not found');
+        if (deletedRestaurant === null) throw new NotFoundException('Restaurant not found');
 
         deletedRestaurant = deletedRestaurant.toJSON();
 

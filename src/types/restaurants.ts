@@ -29,10 +29,11 @@ export class RestaurantDTO {
     address: any;
     borough: string;
     cuisine: string;
-    grades: [];
+    grades: any[];
     name: string;
     restaurant_id: string;
-    constructor(restaurant: IRestaurant) {
+
+    constructor(restaurant: { address: {}; name: string; cuisine: string; borough: string; grades: any[]; restaurant_id: string }) {
         this.address = restaurant.address;
         this.borough = restaurant.borough;
         this.cuisine = restaurant.cuisine;

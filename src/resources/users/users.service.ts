@@ -1,4 +1,4 @@
-import {IUser, Users} from '~~/types/Users'
+import {IUser, Users} from '~/types/Users'
 import {AbstractException} from "~/utils/exceptions";
 
 export class UsersService {

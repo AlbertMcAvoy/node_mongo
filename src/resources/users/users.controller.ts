@@ -2,7 +2,8 @@ import { Router } from 'express'
 import { UsersService } from '~/resources/users/users.service'
 import { BadRequestException, ConflictException, NotFoundException } from '~/utils/exceptions'
 import { authenticateToken } from "~/middlewares/authentication.handler";
-import {IUser, UserDTO} from "~~/types/Users";
+import {IUser, UserDTO} from "~/types/Users";
+
 /**
  * We create a router, allowing us to create routes outside `src/index.ts`
  */

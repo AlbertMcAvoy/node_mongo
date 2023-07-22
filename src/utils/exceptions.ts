@@ -1,4 +1,4 @@
-import { ApiException } from '~~/types/exceptions'
+import { ApiException } from '~/types/exceptions'
 
 /**
  * Abstract class used to make HTTP errors
@@ -36,7 +36,7 @@ export class BadRequestException extends AbstractException {
  */
 export class UnauthorizedException extends AbstractException {
     constructor(error: any) {
-        super(error, 400)
+        super(error, 401)
     }
 }
 

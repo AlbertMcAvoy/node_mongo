@@ -1,4 +1,4 @@
-import {IRestaurant, Restaurants} from '~~/types/restaurants'
+import {IRestaurant, Restaurants} from '~/types/restaurants'
 import {AbstractException} from "~/utils/exceptions";
 
 export class RestaurantsService {
