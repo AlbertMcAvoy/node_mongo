@@ -52,15 +52,17 @@ app.all('*', UnknownRoutesHandler)
  */
 app.use(ExceptionsHandler)
 
-mongoose.connect('mongodb+srv://mykechastang:fYCZmUHTzOlXULNm@clusteralbert.c3xo0el.mongodb.net/sample_restaurants?retryWrites=true&w=majority')
-    .then(() => {
-    console.log('Connected!')
+if (require.main === module) {
+    mongoose.connect('mongodb+srv://mykechastang:fYCZmUHTzOlXULNm@clusteralbert.c3xo0el.mongodb.net/sample_restaurants?retryWrites=true&w=majority')
+        .then(() => {
+            console.log('Connected!')
 
-    /**
-     * Tell express to listen to request on the config port
-     */
-    app.listen(process.env.API_PORT, () => console.log(`Application running on port : ${process.env.API_PORT}`))
-});
+            /**
+             * Tell express to listen to request on the config port
+             */
+            app.listen(process.env.API_PORT, () => console.log(`Application running on port : ${process.env.API_PORT}`))
+        });
+}
 
 mongoose.set('toObject', { useProjection: true });
 mongoose.set('toJSON', { useProjection: true });

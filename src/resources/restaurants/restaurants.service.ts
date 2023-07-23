@@ -36,7 +36,7 @@ export class RestaurantsService {
      */
     async update(restaurantData: Partial<IRestaurant>, id: string) {
         try {
-            if (restaurantData.restaurant_id) delete restaurantData.restaurant_id;
+            if (restaurantData.restaurant_id || restaurantData.restaurant_id === "") delete restaurantData.restaurant_id;
             let result = await Restaurants.updateOne({restaurant_id: id}, restaurantData);
             if (!result.modifiedCount) throw new AbstractException('The restaurant was not updated, nothing to update', 500);
             return this.findOne(id);
