@@ -1,4 +1,4 @@
-import {IUser, Users} from '~/types/Users'
+import {IUser, Users} from '~/types/users'
 import {AbstractException} from "~/utils/exceptions";
 
 export class UsersService {
@@ -45,7 +45,7 @@ export class UsersService {
      */
     async update(userData: Partial<IUser>, id: string) {
         try {
-            if (userData.uuid) delete userData.uuid;
+            if (userData.uuid || userData.uuid == "") delete userData.uuid;
             let result = await Users.updateOne({uuid: id}, userData);
             if (!result.modifiedCount) throw new AbstractException('The user was not updated, nothing to update', 500);
             return this.findOneById(id);

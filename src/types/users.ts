@@ -22,12 +22,15 @@ export const Users = model<IUser>('User', userSchema);
 
 //4. Create a DTO
 export class UserDTO {
-    private name: string;
-    private uuid: string;
-    private email: string;
-    constructor(user: IUser) {
+    name: string;
+    uuid: string;
+    email: string;
+    password?: string;
+
+    constructor(user: any) {
         this.uuid = user.uuid;
         this.email = user.email;
         this.name = user.name;
+        this.password = user?.password;
     }
 }

@@ -53,7 +53,7 @@ app.all('*', UnknownRoutesHandler)
 app.use(ExceptionsHandler)
 
 if (require.main === module) {
-    mongoose.connect('mongodb+srv://mykechastang:fYCZmUHTzOlXULNm@clusteralbert.c3xo0el.mongodb.net/sample_restaurants?retryWrites=true&w=majority')
+    mongoose.connect(process.env.MONGO_DB_URL || 'mongodb+srv://mykechastang:fYCZmUHTzOlXULNm@clusteralbert.c3xo0el.mongodb.net/sample_restaurants?retryWrites=true&w=majority')
         .then(() => {
             console.log('Connected!')
 
