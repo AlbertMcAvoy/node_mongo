@@ -41,4 +41,5 @@ L'application se compile avec la commande `npm run build`, puis se lance avec `n
 # Éléments de cours
 
 [Prise de notes](docs/notes/Prise%20de%20note.md)
+
 [Exercices 1 & 2](docs/notes/Exercices.md)
