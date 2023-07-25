@@ -9,6 +9,7 @@ export class AuthenticationService {
             return sign(user, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '1800s' });
         } catch(e) {
             console.log(e);
+            throw e;
         }
     }
 }

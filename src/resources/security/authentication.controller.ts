@@ -26,7 +26,9 @@ AuthenticationController.post('/', async (req, res, next) => {
 
         const accessToken = service.generateAccessToken(user.toJSON());
 
-        res.send({
+        return res
+            .status(200)
+            .json({
             accessToken,
         });
     } catch(error) {
