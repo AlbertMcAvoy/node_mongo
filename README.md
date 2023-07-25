@@ -29,8 +29,10 @@ Ici la vérification se fait via un middleware.
 
 L'API est développée avec Express `v4.18.2` et suit une architecture MVC avec pour ORM mongoose `v7.3.0` (et mongodb `v5.6.0`).
 
+L'API est testée avec Mocha et Chai version `v10.2.0` et `v4.3.7`.
+
 L'arborescence s'articule autour du dossier `ressources` et contient les couples controller / service des 
-ressources mises à disposition (exception pour `security` qui n'est pas une ressource mais qui se base sur les utilisateurs).
+ressources mises à disposition (exception pour `security` qui n'est pas une ressource, mais qui se base sur les utilisateurs).
 
 # Lancement
 

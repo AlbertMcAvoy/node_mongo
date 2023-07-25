@@ -63,6 +63,7 @@ export class RestaurantsService {
 
     /**
      * Delete a restaurant
+     * @param id - unique ID of restaurant
      */
     async delete(id: number) {
         try {

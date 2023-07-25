@@ -87,6 +87,7 @@ export class UsersService {
 
     /**
      * Delete a user
+     * @param id - Unique ID of user
      */
     async delete(id: number) {
         try {
