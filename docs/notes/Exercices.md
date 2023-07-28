@@ -18,17 +18,11 @@
 
 Écrivez une requête pour compter le nombre d'employés par poste.
 
-````javascript
-db.employees.aggregate([
-    {"$group" : {_id:"$job", count:{$sum:1}}}
-])
-````
+`db.employees.aggregate([{"$group" : {_id:"$job", count:{$sum:1}}}])`
 
 Écrivez une requête pour mettre à jour le salaire de tous les développeurs à 80000.
 
-```js
-db.employees.updateMany({"job": "Developer"}, {$set: {"salary": 80000}})
-```
+`db.employees.updateMany({"job": "Developer"}, {$set: {"salary": 80000}})`
 
 # Exercices 2
 
@@ -116,12 +110,24 @@ Exercice 19 Pour les salles dont le nom commence par une voyelle (peu importe la
 
 Exercice 20 En mode upsert, vous mettrez à jour tous les documents dont le nom commence par un z ou un Z en leur affectant comme nom « Pub Z », comme valeur du champ capacite 50 personnes (type entier et non décimal) et en positionnant le champ booléen smac à la valeur « false ».
 
+`db.salles.updateMany({ nom: { $regex: /^[zZ]/ } }, { $set: { nom: "Pub Z", capacite: 50, smac: false } }, { upsert: true })`
+
 Exercice 21 Affichez le décompte des documents pour lesquels le champ \_id est de type « objectId ». 
+
+`db.salles.countDocuments({ _id: { $type: "objectId" } })`
 
 Exercice 22 Pour les documents dont le champ \_id n’est pas de type « objectId », affichez le nom de la salle ayant la plus grande capacité. Pour y parvenir, vous effectuerez un tri dans l’ordre qui convient tout en limitant le nombre de documents affichés pour ne retourner que celui qui comporte la capacité maximale. 
 
+`db.salles.find({ _id: { $type: "objectId" } }).sort({ capacite: -1 }).limit(1)`
+
 Exercice 23 Remplacez, sur la base de la valeur de son champ \_id, le document créé à l’exercice 20 par un document contenant seulement le nom préexistant et la capacité, que vous monterez à 60 personnes. 
+
+`db.salles.replaceOne({ _id: 3 }, { _id: 3, nom: "Sonograf", capacite: 60 })`
 
 Exercice 24 Effectuez la suppression d’un seul document avec les critères suivants : le champ \_id est de type « objectId » et la capacité de la salle est inférieure ou égale à 60 personnes. 
 
+`db.salles.deleteOne({ _id: { $type: "objectId" }, capacite: { $lte: 60 } })`
+
 Exercice 25 À l’aide de la méthode permettant de trouver un seul document et de le mettre à jour en même temps, réduisez de 15 personnes la capacité de la salle située à Nîmes.
+
+`db.salles.findOneAndUpdate({ nom: { $in: ["Nîmes", "nîmes"] } },{ $inc: { capacite: -15 } })`
