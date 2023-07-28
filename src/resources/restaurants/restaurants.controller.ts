@@ -4,8 +4,26 @@ import {BadRequestException, ConflictException, NotFoundException} from '~/utils
 import {authenticateToken} from "~/middlewares/authentication.handler";
 import {IRestaurant, RestaurantDTO} from "~/types/restaurants";
 
+/**
+ *
+ * @swagger
+ * tags:
+ *   name: Restaurants
+ *   description: API for managing restaurants
+ */
 
 /**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *
+ */
+
+/*
  * We create a router, allowing us to create routes outside `src/index.ts`
  */
 const RestaurantsController = Router();
@@ -16,7 +34,23 @@ const RestaurantsController = Router();
 const service = new RestaurantsService();
 
 /**
- * Find all restaurants
+ * @swagger
+ * /restaurants:
+ *   get:
+ *     summary: Find all restaurants
+ *     tags: [Restaurants]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns an array of restaurants
+ *         content:
+ *          application/json:
+ *           schema:
+ *            type: array
+ *            items:
+ *             anyOf:
+ *              - $ref: '#/components/schemas/Restaurant'
  */
 RestaurantsController.get('/', authenticateToken, async (req, res, next) => {
     try {
@@ -29,7 +63,29 @@ RestaurantsController.get('/', authenticateToken, async (req, res, next) => {
 })
 
 /**
- * Find a specific restaurant
+ * @swagger
+ * /restaurants/{id}:
+ *   get:
+ *     summary: Find a restaurant by id
+ *     tags: [Restaurants]
+ *     parameters:
+ *       - in: path
+ *         name: restaurant_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the restaurant
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns a restaurant object
+ *         content:
+ *          application/json:
+ *           schema:
+ *            $ref: '#/components/schemas/Restaurant'
+ *       404:
+ *         description: Restaurant not found
  */
 RestaurantsController.get('/:id', authenticateToken, async (req, res, next) => {
     try {
@@ -51,7 +107,27 @@ RestaurantsController.get('/:id', authenticateToken, async (req, res, next) => {
 })
 
 /**
- * Create a restaurant
+ * @swagger
+ * /restaurants:
+ *   post:
+ *     summary: Create a new restaurant
+ *     tags: [Restaurants]
+ *     requestBody:
+ *       description: Restaurant object to be created
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Restaurant"
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Created successfully, returns the restaurant object created
+ *         content:
+ *          application/json:
+ *              schema:
+ *                  $ref: "#/components/schemas/Restaurant"
  */
 RestaurantsController.post('/', authenticateToken, async (req, res, next) => {
     try {
@@ -70,8 +146,38 @@ RestaurantsController.post('/', authenticateToken, async (req, res, next) => {
     }
 })
 
+
 /**
- * Update restaurant
+ * @swagger
+ * /restaurants/{id}:
+ *   put:
+ *     summary: update a new restaurant
+ *     tags: [Restaurants]
+ *     parameters:
+ *       - in: path
+ *         name: restaurant_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the restaurant
+ *     requestBody:
+ *       description: Restaurant object to be created
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Restaurant"
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Updated successfully, returns the restaurant object updated
+ *         content:
+ *          application/json:
+ *              schema:
+ *                  $ref: "#/components/schemas/Restaurant"
+ *       404:
+ *         description: Restaurant not found
  */
 RestaurantsController.put('/:id', authenticateToken, async (req, res, next) => {
     try {
@@ -90,7 +196,29 @@ RestaurantsController.put('/:id', authenticateToken, async (req, res, next) => {
 })
 
 /**
- * Delete restaurant
+ * @swagger
+ * /restaurants/{id}:
+ *   delete:
+ *     summary: Delete a restaurant by id
+ *     tags: [Restaurants]
+ *     parameters:
+ *       - in: path
+ *         name: restaurant_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the restaurant
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns a restaurant object
+ *         content:
+ *          application/json:
+ *              schema:
+ *                  $ref: "#/components/schemas/Restaurant"
+ *       404:
+ *         description: Restaurant not found
  */
 RestaurantsController.delete('/:id', authenticateToken, async (req, res, next) => {
     try {

@@ -5,6 +5,8 @@ Elle offre aussi un CRUD sur des utilisateurs, permettant ainsi d'avoir accès �
 
 Les routes sont donc protégées par JWT (sauf la création d'utilisateurs dans le cadre de ce tp pour tester).
 
+Un swagger est disponible via l'url `/aoi-docs`. Voir [Lancement](#lancement)
+
 L'API respecte aussi les 5 principes RESTFUL :
 - 1 : l’URI comme identifiant des ressources. Ce principe permet de régir l'identification des ressources.
 Une bonne construction des URI permet de mieux les trier

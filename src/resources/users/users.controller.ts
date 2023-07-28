@@ -5,6 +5,14 @@ import { authenticateToken } from "~/middlewares/authentication.handler";
 import {IUser, UserDTO} from "~/types/users";
 
 /**
+ *
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: API for managing users
+ */
+
+/**
  * We create a router, allowing us to create routes outside `src/index.ts`
  */
 const UsersController = Router()
@@ -15,7 +23,23 @@ const UsersController = Router()
 const service = new UsersService()
 
 /**
- * Find all users
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Find all users
+ *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns an array of users
+ *         content:
+ *          application/json:
+ *           schema:
+ *            type: array
+ *            items:
+ *             anyOf:
+ *              - $ref: '#/components/schemas/User'
  */
 UsersController.get('/', authenticateToken, async (req, res, next) => {
     try {
@@ -28,7 +52,29 @@ UsersController.get('/', authenticateToken, async (req, res, next) => {
 })
 
 /**
- * Find a specific user
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Find a user by id
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: uuid
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the user
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns a user object
+ *         content:
+ *          application/json:
+ *           schema:
+ *            $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Restaurant not found
  */
 UsersController.get('/:id', authenticateToken, async (req, res, next) => {
     try {
@@ -49,7 +95,27 @@ UsersController.get('/:id', authenticateToken, async (req, res, next) => {
 })
 
 /**
- * Create user
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       description: User object to be created
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/User"
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Created successfully, returns the user object created
+ *         content:
+ *          application/json:
+ *              schema:
+ *                  $ref: "#/components/schemas/User"
  */
 UsersController.post('/', async (req, res, next) => {
     try {
@@ -68,7 +134,36 @@ UsersController.post('/', async (req, res, next) => {
 })
 
 /**
- * Update user
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *     summary: update a new user
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the user
+ *     requestBody:
+ *       description: User object to be created
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/User"
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Updated successfully, returns the user object updated
+ *         content:
+ *          application/json:
+ *              schema:
+ *                  $ref: "#/components/schemas/User"
+ *       404:
+ *         description: User not found
  */
 UsersController.put('/:id', authenticateToken, async (req, res, next) => {
     try {
@@ -87,7 +182,29 @@ UsersController.put('/:id', authenticateToken, async (req, res, next) => {
 })
 
 /**
- * Delete user
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete a user by id
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: id of the user
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns a user object
+ *         content:
+ *          application/json:
+ *              schema:
+ *                  $ref: "#/components/schemas/User"
+ *       404:
+ *         description: User not found
  */
 UsersController.delete('/:id', authenticateToken, async (req, res, next) => {
     try {

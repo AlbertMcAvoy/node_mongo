@@ -7,6 +7,8 @@ import { UnknownRoutesHandler } from '~/middlewares/unknownRoutes.handler'
 import mongoose from "mongoose";
 import { config } from "dotenv";
 import {AuthenticationController} from "~/resources/security/authentication.controller";
+import swaggerUi from 'swagger-ui-express';
+import {specs} from "~/utils/swagger";
 config();
 
 /**
@@ -40,6 +42,11 @@ app.use('/restaurants', RestaurantsController)
  * CRUD for users handled by '/users'
  */
 app.use('/users', UsersController)
+
+/**
+ * Swagger for the api's documentation
+ */
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
  * Return an error for all other routes not supported
