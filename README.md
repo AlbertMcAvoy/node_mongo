@@ -33,6 +33,8 @@ L'API est développée avec Express `v4.18.2` et suit une architecture MVC avec 
 
 L'API est testée avec Mocha et Chai version `v10.2.0` et `v4.3.7`.
 
+L'API log les accès, erreurs et warnings dans des fichiers logs, du dossier éponyme. Pour cela, l'API utilise Winston `v3.0.0` (et express-winston `v4.0.4`)
+
 L'arborescence s'articule autour du dossier `ressources` et contient les couples controller / service des 
 ressources mises à disposition (exception pour `security` qui n'est pas une ressource, mais qui se base sur les utilisateurs).
 

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import {wLogger} from "~/utils/logger";
 
 /**
  * Middleware to manage global errors
@@ -17,6 +18,14 @@ export const ExceptionsHandler = (err: any, req: Request, res: Response, next: N
     if (res.headersSent) {
         return next(err)
     }
+
+    /**
+     * log the errors and warns in a file
+     */
+    let level = 'errors';
+    if (err.status >= 400) level = "warns";
+    const logger = wLogger({ level });
+    logger.log(level, err.error && err.error || err.toString());
 
     /**
      * if true, we know this is our error

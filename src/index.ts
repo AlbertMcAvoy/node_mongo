@@ -9,6 +9,7 @@ import { config } from "dotenv";
 import {AuthenticationController} from "~/resources/security/authentication.controller";
 import swaggerUi from 'swagger-ui-express';
 import {specs} from "~/utils/swagger";
+import {AccessHandler} from "~/middlewares/accessLogger.handler";
 config();
 
 /**
@@ -27,6 +28,11 @@ app.use(express.json())
  * Tell express that we want all DNS to access the API
  */
 app.use(cors())
+
+/**
+ * Access logger
+ */
+app.use(AccessHandler);
 
 /**
  * Authentication stuff
